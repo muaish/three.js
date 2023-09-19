@@ -320,25 +320,38 @@
 
 				// cone
 
-				let x = 0
+				const baseElementCount = 2;
+            const maxRadius = 700; 
 
-				for ( let i = 0, l = objects.length; i < l; i ++) {
+            for (let i = 0, l = objects.length; i < l; i++) {
+                let radius;
+                let y;
+                if (i < l - baseElementCount) {
+                    const halfWay = (l - baseElementCount) / 2; 
+                    if (i < halfWay) {
+                        radius = (i / halfWay) * maxRadius;
+                        y = - 1600
 
-					const theta = i * 4 + Math.PI;
-					const y = - ( i * 12 ) + 450;
+                    } else {
+                        radius = maxRadius - ((i - halfWay) / halfWay) * maxRadius;
+                        y = - (i * 50) + 450;
+                    }
+                } else {
+                    radius = 0;
+                    y = - (i * 50) + 450;
+                }
 
-					const object = new THREE.Object3D();
+                const theta = i * 4 + Math.PI;               
+                const object = new THREE.Object3D();
+                object.position.setFromCylindricalCoords(radius, theta, y);
 
-					object.position.setFromCylindricalCoords( x, theta, y );
+                vector.x = object.position.x * 2;
+                vector.y = object.position.y;
+                vector.z = object.position.z * 2;
 
-					vector.x = object.position.x * 2;
-					vector.y = object.position.y;
-					vector.z = object.position.z * 2;
-
-					object.lookAt( vector );
-					targets.cone.push( object );
-					x = x + 7;
-				}
+                object.lookAt(vector);
+                targets.cone.push(object);              
+            }
 
 				//
 
